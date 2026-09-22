@@ -30,7 +30,12 @@
     [ "esp:3V3.1", "mpu1:VCC", "red", [] ],
     [ "esp:GND.1", "mpu1:GND", "black", [] ],
     [ "esp:8", "mpu1:SDA", "green", [] ],
-    [ "esp:9", "mpu1:SCL", "blue", [] ]
+    [ "esp:9", "mpu1:SCL", "blue", [] ],
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ]
   ],
-  "dependencies": {}
+  "dependencies": {},
+  "serialMonitor": {
+    "display": "terminal"
+  }
 }

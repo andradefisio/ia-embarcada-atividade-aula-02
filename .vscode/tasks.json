@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ESP-IDF: Build (ESP32-S3)",
+      "type": "process",
+      "command": "${env:LOCALAPPDATA}\\Microsoft\\WinGet\\Packages\\Espressif.EIM-CLI_Microsoft.Winget.Source_8wekyb3d8bbwe\\eim.exe",
+      "args": [
+        "run",
+        "idf.py build",
+        "v5.5.5"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

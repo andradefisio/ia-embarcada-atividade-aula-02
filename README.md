@@ -27,13 +27,19 @@ O arquivo `diagram.json` ja contem essa montagem.
 1. Instale o **ESP-IDF Installation Manager** e uma versao estavel do ESP-IDF.
 2. No VS Code, instale as extensoes **ESP-IDF** (Espressif) e **Wokwi Simulator**.
 3. Execute `ESP-IDF: Configure ESP-IDF Extension` pela paleta de comandos.
-4. Abra esta pasta no VS Code e selecione o alvo `esp32s3`.
+4. Use **Arquivo > Abrir Pasta** e abra exatamente a pasta
+   `atividade-pratica-2-leitura-sensor` (nao abra somente a pasta-pai
+   `09-IA-Embarcada`). Depois, selecione o alvo `esp32s3`.
 5. Entre em sua conta no Wokwi quando a extensao solicitar. A licenca gratuita
    ou trial precisa estar ativa para executar a simulacao integrada.
 
 ## Compilacao
 
-No terminal configurado do ESP-IDF:
+Com a pasta correta aberta, pressione `Ctrl+Shift+B` e selecione
+`ESP-IDF: Build (ESP32-S3)`. A tarefa incluida no projeto abre o terminal e
+executa o build. No final deve aparecer `Project build complete`.
+
+Como alternativa, no terminal configurado do ESP-IDF:
 
 ```text
 idf.py set-target esp32s3
@@ -50,8 +56,11 @@ O `wokwi.toml` aponta para estes artefatos gerados:
 1. Compile o projeto sem erros.
 2. Abra `diagram.json` para conferir visualmente o circuito.
 3. Pressione `F1` e execute `Wokwi: Start Simulator`.
-4. No MPU6050, altere os controles de aceleracao/rotacao para variar os dados.
-5. Capture uma unica tela ampla ou telas separadas mostrando:
+4. O monitor serial abre na parte inferior do simulador e recebe uma nova
+   leitura a cada segundo. Se estiver recolhido, arraste para cima a borda
+   inferior do simulador.
+5. No MPU6050, altere os controles de aceleracao/rotacao para variar os dados.
+6. Capture uma unica tela ampla ou telas separadas mostrando:
    - o circuito completo;
    - a mensagem de build concluido;
    - o monitor serial com varias leituras;
