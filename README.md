@@ -13,7 +13,7 @@ Repositorio da entrega:
 
 | ESP32-S3 DevKitC-1 | MPU6050 | Funcao |
 |---|---|---|
-| 3V3 | VCC | Alimentacao |
+| 3V3.1 | VCC | Alimentacao de 3,3 V |
 | GND | GND | Terra |
 | GPIO 8 | SDA | Dados I2C |
 | GPIO 9 | SCL | Clock I2C |
