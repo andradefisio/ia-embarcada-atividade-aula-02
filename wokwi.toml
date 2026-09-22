@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = "build/leitura_mpu6050.bin"
+elf = "build/leitura_mpu6050.elf"
