@@ -1,101 +1,111 @@
-# Atividade Avaliativa Pratica 2/6 - Leitura de sensor
+# Atividade Avaliativa Prática 2/6 — Leitura de sensor
 
-Aplicacao em C para ESP32-S3 que inicializa um MPU6050 por I2C, le aceleracao,
-giroscopio e temperatura e imprime as medicoes no monitor serial. O circuito e
-simulado no Wokwi e o firmware e compilado com ESP-IDF.
+Neste trabalho desenvolvi uma aplicação embarcada em C para ler os dados de um
+sensor MPU6050 utilizando uma placa ESP32-S3. O projeto foi compilado com o
+ESP-IDF no VS Code e executado no simulador Wokwi.
 
-Build validado em 21/09/2026 com ESP-IDF v5.5.5 para o alvo `esp32s3`.
+O programa lê os valores de aceleração, rotação e temperatura do sensor e
+mostra uma nova medição no monitor serial a cada segundo.
 
-Repositorio da entrega:
+Repositório da atividade:
 <https://github.com/andradefisio/ia-embarcada-atividade-aula-02>
 
-## Componentes e ligacoes
+## Componentes utilizados
 
-| ESP32-S3 DevKitC-1 | MPU6050 | Funcao |
+- ESP32-S3 DevKitC-1;
+- sensor MPU6050;
+- extensão ESP-IDF para o VS Code;
+- extensão Wokwi Simulator;
+- ESP-IDF v5.5.5.
+
+## Ligações do circuito
+
+| ESP32-S3 | MPU6050 | Função |
 |---|---|---|
-| 3V3.1 | VCC | Alimentacao de 3,3 V |
+| 3V3 | VCC | Alimentação de 3,3 V |
 | GND | GND | Terra |
-| GPIO 8 | SDA | Dados I2C |
-| GPIO 9 | SCL | Clock I2C |
+| GPIO 8 | SDA | Dados do barramento I2C |
+| GPIO 9 | SCL | Clock do barramento I2C |
 
-O pino AD0 permanece desconectado, portanto o endereco I2C padrao e `0x68`.
+O pino AD0 ficou desconectado. Dessa forma, o endereço I2C utilizado pelo
+MPU6050 é `0x68`. A montagem completa está no arquivo `diagram.json`.
 
-O arquivo `diagram.json` ja contem essa montagem.
+## Funcionamento do programa
 
-## Configuracao do ambiente
+Na inicialização, o programa configura o barramento I2C, verifica o registrador
+`WHO_AM_I` e retira o MPU6050 do modo de repouso. Em seguida, configura as
+escalas do acelerômetro e do giroscópio.
 
-1. Instale o **ESP-IDF Installation Manager** e uma versao estavel do ESP-IDF.
-2. No VS Code, instale as extensoes **ESP-IDF** (Espressif) e **Wokwi Simulator**.
-3. Execute `ESP-IDF: Configure ESP-IDF Extension` pela paleta de comandos.
-4. Use **Arquivo > Abrir Pasta** e abra exatamente a pasta
-   `atividade-pratica-2-leitura-sensor` (nao abra somente a pasta-pai
-   `09-IA-Embarcada`). Depois, selecione o alvo `esp32s3`.
-5. Entre em sua conta no Wokwi quando a extensao solicitar. A licenca gratuita
-   ou trial precisa estar ativa para executar a simulacao integrada.
+Depois da inicialização, são lidos 14 bytes a partir do registrador de
+aceleração. Os valores brutos são convertidos para:
 
-## Compilacao
+- aceleração em `g`;
+- velocidade angular em graus por segundo;
+- temperatura em graus Celsius.
 
-Com a pasta correta aberta, pressione `Ctrl+Shift+B` e selecione
-`ESP-IDF: Build (ESP32-S3)`. A tarefa incluida no projeto abre o terminal e
-executa o build. No final deve aparecer `Project build complete`.
+As leituras são enviadas pela UART0, em 115200 baud, para o monitor serial do
+Wokwi. O intervalo entre as leituras é de 1 segundo.
 
-Como alternativa, no terminal configurado do ESP-IDF:
+## Compilação
+
+No VS Code, abri diretamente a pasta `atividade-pratica-2-leitura-sensor` e
+executei a tarefa de compilação com `Ctrl+Shift+B`:
+
+```text
+ESP-IDF: Build (ESP32-S3)
+```
+
+Também é possível compilar pelo terminal configurado do ESP-IDF:
 
 ```text
 idf.py set-target esp32s3
 idf.py build
 ```
 
-O `wokwi.toml` aponta para estes artefatos gerados:
+A compilação foi validada em 22/09/2026 com o ESP-IDF v5.5.5. O processo foi
+concluído sem erros e gerou os arquivos:
 
-- `build/leitura_mpu6050.bin`
-- `build/leitura_mpu6050.elf`
+- `build/leitura_mpu6050.bin`;
+- `build/leitura_mpu6050.elf`.
 
-## Simulacao e monitor serial
+## Execução no Wokwi
 
-1. Compile o projeto sem erros.
-2. Abra `diagram.json` para conferir visualmente o circuito.
-3. Pressione `F1` e execute `Wokwi: Start Simulator`.
-4. O monitor serial abre na parte inferior do simulador e recebe uma nova
-   leitura a cada segundo. Se estiver recolhido, arraste para cima a borda
-   inferior do simulador.
-5. No MPU6050, altere os controles de aceleracao/rotacao para variar os dados.
-6. Capture uma unica tela ampla ou telas separadas mostrando:
-   - o circuito completo;
-   - a mensagem de build concluido;
-   - o monitor serial com varias leituras;
-   - as extensoes ESP-IDF e Wokwi configuradas.
-
-Saida serial esperada:
+Depois da compilação, iniciei a simulação pela paleta de comandos do VS Code:
 
 ```text
-I (...) MPU6050: MPU6050 identificado no endereco I2C 0x68
-I (...) MPU6050: Acel [g] X=+0.000 Y=+0.000 Z=+1.000 | Giro [graus/s] X=+0.00 Y=+0.00 Z=+0.00 | Temp=24.00 C
+Wokwi: Start Simulator
 ```
 
-## Estrutura
+Durante a simulação, alterei os valores de aceleração, rotação e temperatura nos
+controles do MPU6050. As mudanças apareceram corretamente no monitor serial.
+
+Exemplo de leitura:
+
+```text
+I (...) MPU6050: Acel [g] X=+0.500 Y=+0.600 Z=+0.750 | Giro [graus/s] X=+70.00 Y=+90.00 Z=+100.00 | Temp=48.00 C
+```
+
+## Evidências
+
+- [Extensões ESP-IDF e Wokwi instaladas](evidencias/01-extensoes-esp-idf-wokwi.png);
+- [circuito montado no Wokwi](evidencias/02-circuito-wokwi.png);
+- [compilação concluída sem erros](evidencias/03-build-sem-erros.png);
+- [monitor serial mostrando as leituras](evidencias/04-monitor-serial.png).
+
+## Estrutura do projeto
 
 ```text
 .
-|-- CMakeLists.txt
-|-- diagram.json
-|-- sdkconfig.defaults
-|-- wokwi.toml
+|-- .vscode/
+|   `-- tasks.json
+|-- evidencias/
 |-- main/
 |   |-- CMakeLists.txt
 |   |-- main.c
 |   |-- mpu6050.c
 |   `-- mpu6050.h
-`-- evidencias/
+|-- CMakeLists.txt
+|-- diagram.json
+|-- sdkconfig.defaults
+`-- wokwi.toml
 ```
-
-## Entrega
-
-Antes de enviar:
-
-- substitua o nome do autor em `diagram.json`, se desejar;
-- coloque os screenshots finais em `evidencias/` e versione-os;
-- entregue o link do repositorio e o screenshot solicitado.
-
-Nao versione tokens, senhas, arquivos de configuracao pessoal ou credenciais do
-Wokwi/GitHub.
